@@ -1,13 +1,14 @@
 # Question : How can i add a front end and backend validation to a node js user authentication project? #
 
-# Answer : #
+## Answer : ##
 
+### Frontend Login Validation ###
 You should not be validating or authenticating anything on the front end. That being said, you can use HTML attributes to help take some of the load off your backend and to prevent people from seeing the password as they are typing.
 
 <input type="password" class="input" name="password" autocomplete="off" placeholder="Enter password" required>
 In this example the password type attribute is key to tell HTML the type of input it should be expecting. Adding required will prevent users from leaving the field blank so it can help take a load off your backend and add another level of very basic security (this is still by no means necessary safe input). For more information on the password input type, check out the MDN entry : https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/password
 
-Backend Login Validation for Node JS
+### Backend Login Validation for Node JS ###
 You can use a routing (routes.js) file on the back end to serve different pages with information being passed through a validator. Deciding whether the login data is valid should always be done in a separate controller file that is connected to a database like MySQL for example. Validation or sanitizing user input should always be done in this file but is specific to the type of database you are using. Usually this involves escaping the user input or using prepared statements when dealing with the database.
 
 However in a more general sense, the best Node JS validator in my opinion is express-validator (especially if you are already using express in your backend). By creating your own, and by using existing middleware, you can control what is being passed between a client and server. This allows you to control whether your server continues with the get/post request or if it should send error pages.
