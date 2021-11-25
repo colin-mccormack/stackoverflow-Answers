@@ -6,17 +6,18 @@ Express-validator is intended to sanitize and validate data being sent between t
 
 Here is a sample custom router that displays an error message if the validation fails :
 
-body("feildName", "Feild must be selected")
-    .custom(val => {
+    body("feildName", "Feild must be selected")
+        .custom(val => {
 
-        if (val.feildName == "Select...") return false
+            if (val.feildName == "Select...") return false
 
-        return true
+            return true
 
-    }),
+        }
+    ),
 Once you have isolated all routing to a specific file, you can add arguments like the example below for error messages to be served with the page (personnaly I use ejs templates so these error messages are displayed using the following code :
 
-**controller.js**
+### controller.js ###
     const errors = validationResult(req);
     const {
         body
@@ -30,9 +31,9 @@ Once you have isolated all routing to a specific file, you can add arguments lik
 
     res.render("index");
 
-**index.ejs**
-<div class="error">
-        <% if(typeof error !== 'undefined'){ %>
-              <div class="err-msg"><%= error %></div>
-        <% } %>
-</div>
+## index.ejs ###
+    <div class="error">
+            <% if(typeof error !== 'undefined'){ %>
+                  <div class="err-msg"><%= error %></div>
+            <% } %>
+    </div>
