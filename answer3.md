@@ -1,0 +1,4 @@
+## Question I'm currently trying to validate some inputs in Express using express-validator. I know that it's typical to pass it as a separate middleware into the route, but I needed access to the res object, so I had to write it in the way you see below.
+The part that I'm struggling with is the custom validator. I'd like it to call an asynchronous function store.todoListTitleExists(title) that queries a database and checks if a title already exists. If the title doesn't exist, my intention is to save an error message which I can later display as a flash message.
+Currently, this code doesn't work. I've looked through the documentation but I can't seem to figure out how to make this custom validator + error message work properly since it calls an asynchronous function. Any help would be apprecated.
+Thanks! ##
