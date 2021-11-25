@@ -31,6 +31,6 @@ Node .ics : https://www.npmjs.com/package/ical-generator Node file : https://nod
 
 Require the modules :
 
-  const ical = require('ical-generator');
-  
-  const fs = require("fs");
+      const ical = require('ical-generator');
+
+      const fs = require("fs");
