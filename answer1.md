@@ -2,33 +2,34 @@
 
 ## Answer : ##
 
-### Simultaneous MySQL Database Connection ###
+### Frontend Login Validation ###
+You should not be validating or authenticating anything on the front end. That being said, you can use HTML attributes to help take some of the load off your backend and to prevent people from seeing the password as they are typing.
 
-I would be hesitant to use any client input to connect to a server, but I understand how this could be something you would need to do in some scenarios. The simplest and quickest way around this issue would be to create a second database connection file. In order to make this dynamic, you can simply require the module based on conditions in your code, so sometimes it will be called and promised at only certain points, after certain conditions. This process could be risky and requires requiring modules in the middle of your code so it isn't ideal but can get the job done. Ex :
+    <input type="password" class="input" name="password" autocomplete="off" placeholder="Enter password" required>
+    
+In this example the password type attribute is key to tell HTML the type of input it should be expecting. Adding required will prevent users from leaving the field blank so it can help take a load off your backend and add another level of very basic security (this is still by no means necessary safe input). For more information on the password input type, check out the MDN entry : https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/password
 
-    const dbConnection = require("../utils/dbConnection");
+### Backend Login Validation for Node JS ###
+You can use a routing (routes.js) file on the back end to serve different pages with information being passed through a validator. Deciding whether the login data is valid should always be done in a separate controller file that is connected to a database like MySQL for example. Validation or sanitizing user input should always be done in this file but is specific to the type of database you are using. Usually this involves escaping the user input or using prepared statements when dealing with the database.
 
-//conditional {
+However in a more general sense, the best Node JS validator in my opinion is express-validator (especially if you are already using express in your backend). By creating your own, and by using existing middleware, you can control what is being passed between a client and server. This allows you to control whether your server continues with the get/post request or if it should send error pages.
 
-         const controlledDBConnection = require("../utils/controlledDBConnection");
+To include express-validator in your project simply install the package using npm and include it in your files using :
 
-         var [row] = await controlledDBConnection.execute("SELECT * FROM `foo`;")
+    const { body } = require("express-validator");
 
-}
+or if you need to validate data being passed as url parameters :
 
-Although using more files could potentially have an effect on space constraints and could potentially slow down code while waiting for a new promise, but the overall effect will be minimal. controlledDBConnection.js would just be something close to a duplicate to dbConnection.js with slightly different parameters depending on your needs.
+    const { query } = require("express-validator");
+An example of this validator in use for password input in a routes.js file :
 
-Another path you can take if you want to avoid using multiple files is to export a module with a dynamically set variable from your controller file, and then import it into a standard connection file. This would allow you to change up your connection without rewriting a duplicate, but you will need diligent error checks and a default.
-
-Info on modules in JS : https://javascript.info/import-export
-
-Some other points
-
-Use Environment Variables for your database information like host, etc. since this will allow for you to easily change information for your database all in one place, while also allowing you to include your .env file in .gitignore if you are using github
-
-Here is another great stack overflow question/answer that might help with setting up a dynamic connection file : How to create dynamically database connection in Node.js?
-
-How to set up .env files : https://nodejs.dev/learn/how-to-read-environment-variables-from-nodejs
-
-How to set up .gitignore : https://stackabuse.com/git-ignore-files-with-gitignore/
-
+    router.post("/login",
+        [
+            body("password", "The Password must be of minimum 4 characters length")
+                .notEmpty()
+                .trim()
+                .isLength({ min: 4 }),
+        ],
+        login
+    );
+This example deals with the login url endpoint and if a post request is made at this endpoint, then validate the ejs/html body element with class name "password" using standard express validation methods. For more examples and information on how to use the express-validator check out : https://express-validator.github.io/docs/.
