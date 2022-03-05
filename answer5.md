@@ -1,3 +1,7 @@
+# Question : How can I preform an SQL query to retrieve values that don't have a specific value? #
+
+## Answer : ##
+
 In order to perform a conditional query you can use the SQL `NOT` operator. In this example where you have multiple conditionals that must be satisfied it may make more sense to use the `NOT IN` operator with a list of values that must be satisfied.
 
 ## Examples
